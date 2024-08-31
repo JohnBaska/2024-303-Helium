@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class LightBeamController : MonoBehaviour
 { 
+    public End_Nivel endNivel;
     public TextMeshProUGUI contadorText;
     private LineRenderer lineRenderer;
     public float moveSpeed = 3f;
     public Transform posInicial;
-    public GameObject objectToDuplicate;
     [HideInInspector]
     public int direcao_move_x;
     [HideInInspector]
@@ -17,6 +18,7 @@ public class LightBeamController : MonoBehaviour
     GameObject objetoAtual;
     [HideInInspector]
     public bool movimento;
+    [HideInInspector]
     private int contador = 0; 
 
     void Start()
@@ -47,6 +49,14 @@ public class LightBeamController : MonoBehaviour
     {
         lineRenderer.positionCount += 1;
         lineRenderer.SetPosition(lineRenderer.positionCount - 1, transform.position);
+
+        if (collision.gameObject.name.Contains("obv_final")){
+            endNivel.previousScene = SceneManager.GetActiveScene();
+
+            Debug.Log("Cena Atual: " + endNivel.previousScene);
+            
+            SceneManager.LoadScene("Final - Fase");
+        }
 
         if (collision.gameObject.name.Contains("obv")){
             collision.gameObject.SetActive(false);
